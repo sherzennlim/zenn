@@ -2,7 +2,11 @@ from typing import List
 from fastapi import FastAPI
 from pydantic import BaseModel
 
-app = FastAPI()
+app = FastAPI(
+    title="Intelligent Commission Qualification Engine",
+    description="API for automating commission qualification processes",
+    version="1.0.0"
+)
 
 class Deal(BaseModel):
     id: int
@@ -10,6 +14,21 @@ class Deal(BaseModel):
     amount: float
     sales_rep: str
     status: str
+
+@app.get("/")
+def read_root():
+    """Welcome endpoint with API information."""
+    return {
+        "message": "Welcome to the Intelligent Commission Qualification Engine API",
+        "version": "1.0.0",
+        "status": "operational",
+        "endpoints": {
+            "health": "/health",
+            "deals": "/deals",
+            "documentation": "/docs",
+            "openapi": "/openapi.json"
+        }
+    }
 
 @app.get("/health")
 def health_check():
